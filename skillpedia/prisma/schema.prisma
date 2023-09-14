@@ -26,9 +26,11 @@ model User {
 }
 
 model Category {
-  id     String   @id @default(cuid())
-  name   String
-  Course Course[]
+  id        String   @id @default(cuid())
+  name      String
+  Course    Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Course {
@@ -39,32 +41,40 @@ model Course {
   owner      User     @relation(fields: [ownerId], references: [id])
   ownerId    String
   reviews    Review[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Review {
-  id          String @id @default(cuid())
-  Course      Course @relation(fields: [courseId], references: [id])
+  id          String   @id @default(cuid())
+  Course      Course   @relation(fields: [courseId], references: [id])
   courseId    String
   description String
-  user        User   @relation(fields: [UserId], references: [id])
+  user        User     @relation(fields: [UserId], references: [id])
   UserId      String
   rating      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Module {
-  id      String    @id @default(cuid())
-  name    String
-  lessons Lession[]
+  id        String    @id @default(cuid())
+  name      String
+  lessons   Lession[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Lession {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   duration  Int
   resources String
   video     String
-  Module    Module  @relation(fields: [moduleId], references: [id])
+  Module    Module   @relation(fields: [moduleId], references: [id])
   moduleId  String
-  User      User?   @relation(fields: [userId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
   userId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
