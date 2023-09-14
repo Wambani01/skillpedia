@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  fname     String
+  username  String    @unique
+  userType  String
+  state     Boolean
+  lname     String
+  password  String    @map("password")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  courses   Course[]
+  Review    Review[]
+  Lession   Lession[]
+}
+
+model Category {
+  id     String   @id @default(cuid())
+  name   String
+  Course Course[]
+}
+
+model Course {
+  id         String   @id @default(cuid())
+  name       String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  owner      User     @relation(fields: [ownerId], references: [id])
+  ownerId    String
+  reviews    Review[]
+}
+
+model Review {
+  id          String @id @default(cuid())
+  Course      Course @relation(fields: [courseId], references: [id])
+  courseId    String
+  description String
+  user        User   @relation(fields: [UserId], references: [id])
+  UserId      String
+  rating      Int
+}
+
+model Module {
+  id      String    @id @default(cuid())
+  name    String
+  lessons Lession[]
+}
+
+model Lession {
+  id        String  @id @default(cuid())
+  name      String
+  duration  Int
+  resources String
+  video     String
+  Module    Module  @relation(fields: [moduleId], references: [id])
+  moduleId  String
+  User      User?   @relation(fields: [userId], references: [id])
+  userId    String?
+}
