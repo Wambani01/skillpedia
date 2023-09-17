@@ -4,7 +4,7 @@ import React from "react";
 const Navbar = () => {
   return (
     <nav className="flex justify-between p-5">
-      <div className="logo">
+      <div className=" flex logo">
         <svg
           width="25"
           height="30"
@@ -21,12 +21,13 @@ const Navbar = () => {
             fill="#F48023"
           />
         </svg>
+        <h3 className="mx-2">Skillpedia</h3>
       </div>
       <div>
-        <Link href="/register" className="my-2">
+        <Link href="/register" className="mx-2">
           Register
         </Link>
-        <Link href="/login" className="my-2">
+        <Link href="/login" className="mx-2">
           Login
         </Link>
       </div>
