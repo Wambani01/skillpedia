@@ -1,10 +1,11 @@
-'use client'
 import Link from "next/link";
 import React from "react";
-import { useSession } from "next-auth/react";
+import { getServerSession } from 'next-auth/next'
+import { signOut } from "next-auth/react"
+import { options } from '@/app/api/auth/[...nextauth]/options'
 
-const Navbar = () => {
-  const { data: session, status } = useSession();
+const Navbar = async () => {
+  const session = await getServerSession(options);
   return (
     <nav className="flex justify-between p-5">
       <div className=" flex logo">
