@@ -5,8 +5,11 @@ import { redirect } from 'next/navigation'
 
 export default async function Dashboard() {
   const session = await getServerSession(options)
+
+
   if (!session) {
-    redirect('/apia/auth/signin?callbackUrl=/dashboard')
+    console.log(JSON.stringify(session))
+    redirect('/api/auth/signin?callbackUrl=/dashboard')
   }
 
   return (
