@@ -1,9 +1,9 @@
-import './globals.css'
+import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Navbar from '@/app/components/navbar/Navbar'
 import Sidenav from '@/app/components/sidenav/Sidenav'
-import AuthProvider from './context/AuthProvider'
+import { Fragment } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,19 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <AuthProvider>
-                    <div className="flex flex-col">
-
-                        <Navbar />
-                        <>
-                            <Sidenav />
-                            {children}
-                        </>
-
-
-                    </div>
-                </AuthProvider>
-
+                {children}
             </body>
         </html>
     )

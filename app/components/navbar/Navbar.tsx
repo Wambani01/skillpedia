@@ -1,7 +1,10 @@
+'use client'
 import Link from "next/link";
 import React from "react";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   return (
     <nav className="flex justify-between p-5">
       <div className=" flex logo">
@@ -27,9 +30,18 @@ const Navbar = () => {
         <Link href="/register" className="mx-2">
           Register
         </Link>
-        <Link href="/login" className="mx-2">
-          Login
-        </Link>
+        {
+          session?.user ? (
+            <Link href="/api/auth/signout" className="mx-2">
+              Signout
+            </Link>)
+            :
+            (<Link href="/api/auth/signin" className="mx-2">
+              Login
+            </Link>
+            )
+        }
+
       </div>
     </nav>
   );
