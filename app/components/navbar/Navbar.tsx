@@ -3,7 +3,8 @@ import React from "react";
 import { getServerSession } from "next-auth/next";
 import { signOut } from "next-auth/react";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
+import { UserNav } from "./Profile";
 
 const Navbar = async () => {
   const session = await getServerSession(options);
@@ -29,7 +30,7 @@ const Navbar = async () => {
         <h3 className="mx-2">Skillpedia</h3>
       </div>
       <div className="flex items-center">
-        <Link
+        {/* <Link
           href="/register"
           className="mx-2 py-3 px-4 text-white bg-orange-500 rounded flex items-center"
         >
@@ -49,14 +50,18 @@ const Navbar = async () => {
             ></path>
           </svg>
           <span>Register</span>
-        </Link>
+        </Link> */}
         {session?.user ? (
-          <Link
-            href="/api/auth/signout"
-            className="mx-2 py-3 px-6 bg-stone-300 text-blue rounded"
-          >
-            Signout
-          </Link>
+          <div className="flex items-center">
+            <p className="mx-3">Welcome, {session?.user.name}</p>
+            {/* <Link
+              href="/api/auth/signout"
+              className="mx-2 py-3 px-6 bg-stone-300 text-blue rounded"
+            >
+              Signout
+            </Link> */}
+            <UserNav />
+          </div>
         ) : (
           <Link
             href="/api/auth/signin"
