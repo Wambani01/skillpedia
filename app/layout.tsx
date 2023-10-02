@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/app/components/navbar/Navbar'
 import Sidenav from '@/app/components/sidenav/Sidenav'
 import AuthProvider from './context/AuthProvider'
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
+
                 <AuthProvider>
                     <div className="flex flex-col">
 
@@ -29,7 +31,7 @@ export default function RootLayout({
                             {children}
                         </div>
 
-
+                        <Toaster />
                     </div>
                 </AuthProvider>
 

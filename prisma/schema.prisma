@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -28,24 +28,31 @@ model User {
   sessions      Session[]
 }
 
-model Category {
-  id        String   @id @default(cuid())
-  name      String
-  Course    Course[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Course {
+  id          String   @id @default(cuid())
+  name        String
+  category    Category @default(OTHER)
+  description String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model Course {
-  id         String   @id @default(cuid())
-  name       String
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
-  owner      User     @relation(fields: [ownerId], references: [id])
-  ownerId    String
-  reviews    Review[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+enum Category {
+  DEVELOPMENT
+  BUSINESS
+  DESIGN
+  MARKETING
+  IT_AND_SOFTWARE
+  PERSONAL_DEVELOPMENT
+  PHOTOGRAPHY
+  MUSIC
+  HEALTH_AND_FITNESS
+  TEACHING_AND_ACADEMICS
+  LIFESTYLE
+  OTHER
 }
 
 model Review {
