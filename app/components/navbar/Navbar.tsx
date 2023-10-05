@@ -63,12 +63,16 @@ const Navbar = async () => {
             <UserNav />
           </div>
         ) : (
-          <Link
-            href="/api/auth/signin"
-            className="mx-2 py-3 px-6 bg-stone-300 text-blue rounded"
-          >
-            Login
-          </Link>
+          <Button asChild>
+            <Link
+              href="/api/auth/signin"
+              className="mx-2 py-3 px-6 bg-stone-300 text-blue rounded"
+            >
+              Login
+            </Link>
+
+          </Button>
+
         )}
       </div>
     </nav>

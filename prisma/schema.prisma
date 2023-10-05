@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String
-  email         String    @unique
-  userType      String    @default("student")
-  state         Boolean   @default(false)
-  password      String?   @map("password")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  email         String      @unique
+  userType      String      @default("student")
+  state         Boolean     @default(false)
+  password      String?     @map("password")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   emailVerified DateTime?
   image         String?
   courses       Course[]
@@ -26,6 +26,8 @@ model User {
   Lession       Lession[]
   accounts      Account[]
   sessions      Session[]
+  mysails       Skillsail[]
+  skillsails    Skillsail[] @relation("Skillsailors")
 }
 
 model Course {
@@ -68,11 +70,13 @@ model Review {
 }
 
 model Module {
-  id        String    @id @default(cuid())
-  name      String
-  lessons   Lession[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          String     @id @default(cuid())
+  name        String
+  lessons     Lession[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Skillsail   Skillsail? @relation(fields: [skillsailId], references: [id])
+  skillsailId String?
 }
 
 model Lession {
@@ -85,6 +89,19 @@ model Lession {
   moduleId  String
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skillsail {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  owner        User     @relation(fields: [ownerId], references: [id])
+  ownerId      String
+  modules      Module[]
+  skillsailors User[]   @relation("Skillsailors") // Reference to participants (skillsailors)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
