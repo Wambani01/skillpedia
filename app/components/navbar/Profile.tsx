@@ -33,7 +33,7 @@ export async function UserNav() {
           className="relative h-8 w-8 rounded-full bg-slate-500"
         >
           <Avatar className="h-8 w-8">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={session?.user?.image || undefined} alt="@shadcn" />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
