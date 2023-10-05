@@ -9,8 +9,23 @@ import {
 } from "@/components/ui/card"
 
 function Course() {
+    //component to express interest in a course
+
     return (
-        <div>Course</div>
+        <div className='p-8 flex flex-col'>
+            <p className='text-8xl'>Learn Without</p>
+            <span>Limits</span>
+            <div>
+                <div>
+                    <p>Course Name</p>
+                    <p>Course Description</p>
+                    <p>Course Category</p>
+                    <p>Course Owner</p>
+                </div>
+
+
+            </div>
+        </div>
     )
 }
 
