@@ -70,4 +70,22 @@ const httpGetAllCourses = async () => {
 
 }
 
-export { httpCreateCourse, httpGetAllUsers, httpGetAllCourses }
+const httpGetCourse = async (id: string) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/courses?id=${id}`, { method: "GET" });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        } else {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error; // You can choose to handle or propagate the error as needed.
+    }
+
+}
+
+
+export { httpCreateCourse, httpGetAllUsers, httpGetAllCourses, httpGetCourse }

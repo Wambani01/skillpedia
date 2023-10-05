@@ -6,6 +6,19 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 
 
 export async function GET(req: NextRequest) {
+    const query = req.nextUrl;
+    const id = query.searchParams.get('id');
+    if (id) {
+        const course = await prisma.course.findUnique({
+            where: {
+                id: id,
+            },
+            include: {
+                owner: true,
+            }
+        });
+        return NextResponse.json(course);
+    }
     const courses = await prisma.course.findMany(
         {
             include: {
@@ -15,6 +28,9 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json(courses);
 }
+
+
+
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(options);

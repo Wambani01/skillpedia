@@ -117,3 +117,5 @@ function Courses() {
 }
 
 export default Courses
+
+export { type Course };
