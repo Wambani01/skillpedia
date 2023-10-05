@@ -7,7 +7,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { useSession } from 'next-auth/react'
-import { httpGetAllUsers } from "@/app/hooks/hooks"
+import { httpCreateCourse, httpGetAllUsers } from "@/app/hooks/hooks"
 
 
 import {
@@ -42,95 +42,103 @@ const formSchema = z.object({
 })
 
 export default function NewCourse() {
-
-    const [isloading, setIsloading] = useState(false);
-    const { toast } = useToast()
     const { data: session } = useSession()
+    const msg = useToast(); // Move the useToast hook call here
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            description: "",
-            category: "",
+            name: "Python 3",
+            description: "Introduction to python 3 and programming.",
+            category: "Business",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>, e: any) {
-
         try {
-            setIsloading(true);
-
             console.log(values);
+            const res = await fetch("http://localhost:3000/api/v1/courses", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            });
 
-
-            const res = await httpGetAllUsers();
             if (res) {
                 form.reset();
+                msg.toast({
+                    title: "Course Created",
+                    description: "Your course has been created.",
+                    type: "foreground",
+                });
             }
         } catch (error) {
             console.error('Order creation error:', error);
-        } finally {
-            setIsloading(false);
+            msg.toast({
+                title: "Error",
+                description: "There was an error creating your course.",
+                type: "foreground",
+            });
         }
-
-        console.log(values);
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Course Name</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Course name ..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public course name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Course Description</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Course description ..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public course description.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Course Category</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Course category ..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public course category.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Submit</Button>
-            </form>
-        </Form>
+        <div className="p-8">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Course Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Course name ..." {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    This is your public course name.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Course Description</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Course description ..." {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    This is your public course description.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Course Category</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Course category ..." {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    This is your public course category.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit">Submit</Button>
+                </form>
+            </Form>
+        </div>
     )
 }
 export { type Course }
